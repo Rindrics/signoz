@@ -6,9 +6,12 @@ services:
     build:
       context: "../../../"
       dockerfile: "./pkg/query-service/Dockerfile"
+      platforms:
+        - "${GOOS}/${GOARCH}"
       args:
         LDFLAGS: ""
-        TARGETPLATFORM: "${GOOS}/${GOARCH}"
+        TARGETOS: ${GOOS}
+        TARGETARCH: ${GOARCH}
     container_name: signoz-query-service
     environment:
       - ClickHouseUrl=tcp://clickhouse:9000
@@ -18,6 +21,8 @@ services:
       - STORAGE=clickhouse
       - GODEBUG=netdns=go
       - TELEMETRY_ENABLED=true
+      - GOOS=${GOOS}
+      - GOARCH=${GOARCH}
     volumes:
       - ./prometheus.yml:/root/config/prometheus.yml
       - ../dashboards:/root/config/dashboards

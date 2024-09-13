@@ -31,8 +31,7 @@ alertmanager:
 - Run the following:
 ```console
 cd signoz/
-If you are using x86_64 processors (All Intel/AMD processors) run sudo make run-x86
-If you are on arm64 processors (Apple M1 Macs) run sudo make run-arm
+run sudo make run-local
 ```
 
 #### Backend Configuration
@@ -54,7 +53,7 @@ If you are on arm64 processors (Apple M1 Macs) run sudo make run-arm
 #### Build and Run locally
 ```console
 cd pkg/query-service
-go build -o build/query-service main.go
+GOOS=$(go env GOOS) GOARCH=$(go env GOARCH) go build -o bin/query-service-${GOOS}-${GOARCH} main.go
 ClickHouseUrl=tcp://localhost:9001 STORAGE=clickhouse build/query-service --prefer-delta=true 
 ```
 
